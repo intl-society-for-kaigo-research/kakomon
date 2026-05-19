@@ -202,7 +202,7 @@ function renderQuiz(quizData, containerId = "quiz") {
       html += `<button type="button" class="choice-btn" data-correct="${choice.isCorrect}" onclick="toggleSelection(this)">${cText}</button>`;
     });
     const safeExp = q.explanation ? q.explanation.replace(/'/g, "\\'").replace(/"/g, '&quot;') : "";
-    html += `</div><button class="submit-btn" onclick="checkAnswerMulti(${index}, '${safeExp}')">回答を確定</button><p class="result"></p><div class="explanation" style="display:none;"></div>`;
+    html += `</div><button class="submit-btn" onclick="checkAnswerMulti(${index}, '${safeExp}')">ANSWER</button><p class="result"></p><div class="explanation" style="display:none;"></div>`;
     div.innerHTML = html;
     container.appendChild(div);
   });
