@@ -235,14 +235,14 @@ function renderQuiz(quizData, containerId = "quiz") {
     const choices = prepareChoices(q, nChoice);
   
     // Markdown変換とルビ処理
-    const qText = (typeof rubyConverter !== "undefined") ? rubyConverter.convert(mdInline(q.question)) : mdInline(q.question);
+    const qText = (typeof rubyConverter !== "undefined") ? mdInline(rubyConverter.convert(q.question)) : mdInline(q.question);
     
     // HTML組み立て
     let html = `<p><strong>Q${index + 1}. ${qText}</strong></p>`;
     html += `<div class="choices-container">`;
     
     choices.forEach(choice => {
-      const cText = (typeof rubyConverter !== "undefined") ? rubyConverter.convert(mdInline(choice.text)) : mdInline(choice.text);
+      const cText = (typeof rubyConverter !== "undefined") ? mdInline(rubyConverter.convert(choice.text)) : mdInline(choice.text);
       html += `<button type="button" class="choice-btn" data-correct="${choice.isCorrect}" onclick="toggleSelection(this)">${cText}</button>`;
     });
     
@@ -335,11 +335,11 @@ function renderQuizForPrint(quizData) {
     // 共通関数を利用（isCorrectの情報も含まれるが、印刷ではtextのみ使用）
     const choices = prepareChoices(q, nChoice);
 
-    const qText = (typeof rubyConverter !== "undefined") ? rubyConverter.convert(mdInline(q.question)) : mdInline(q.question);
+    const qText = (typeof rubyConverter !== "undefined") ? mdInline(rubyConverter.convert(q.question)) : mdInline(q.question);
     let html = `<p><strong>問${index + 1}. ${qText}</strong></p>`;
     
     choices.forEach((c, i) => {
-      const cText = (typeof rubyConverter !== "undefined") ? rubyConverter.convert(mdInline(c.text)) : mdInline(c.text);
+      const cText = (typeof rubyConverter !== "undefined") ? mdInline(rubyConverter.convert(c.text)) : mdInline(c.text);
       html += `<div style="margin-left: 20px; margin-bottom: 0.5rem;">（ ${i + 1} ） ${cText}</div>`;
     });
 

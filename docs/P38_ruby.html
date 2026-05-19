@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>介護福祉士過去問練習 - テスト</title>
+<title>介護福祉士過去問練習 - Exam 38th with Ruby</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -128,7 +128,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">テスト</h1>
+<h1 class="title">Exam 38th with Ruby</h1>
 </div>
 
 
@@ -143,6 +143,7 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
+<p><ruby>問題数<rt>もんだいいすう</rt></ruby>と<ruby>選択肢<rt>せんたくし</rt></ruby>を<ruby>減<rt>へ</rt></ruby>らしてあります。 また、<ruby>選択肢<rt>せんたくし</rt></ruby>はシャッフルしています。</p>
 <div id="quiz">
 
 </div>
@@ -166,19 +167,64 @@ window.quizConfig = {
 
 // --- 実行例 ---
 window.addEventListener('DOMContentLoaded', async () => {
-  const container = document.getElementById("quiz");
   try {
-    // 1. データの読み込み
-    // ※ quiz-engine.js 内に loadData 関数があることが前提
-    const data = await loadData('P38.json'); 
+    console.log("1. ルビの読み込み開始...");
+    // ファイル名が ruby.tsv ならここも合わせてください
+    const rubyRes = await fetch('ruby.csv?v=' + new Date().getTime());
     
-    // 2. データの描画
-    // ※ quiz-engine.js 内に renderQuiz 関数があることが前提
+    if (!rubyRes.ok) throw new Error(`ルビファイルが見つかりません: ${rubyRes.status}`);
+
+    const rubyText = await rubyRes.text();
+    console.log("2. ルビテキスト取得完了。解析します...");
+
+    const parsed = Papa.parse(rubyText, { 
+      header: true, 
+      skipEmptyLines: true,
+      delimiter: "\t" // タブ区切りを明示
+    });
+
+    console.log("3. 解析結果:", parsed.data);
+
+    // --- 修正版：解析と辞書セット ---
+const rubyObj = {};
+
+parsed.data.forEach(row => {
+  for (let key in row) {
+    // String() で強制的に文字列に変換し、中身があるかチェック
+    const rawValue = row[key];
+    if (rawValue === null || rawValue === undefined) continue;
+
+    const fullText = String(rawValue).trim();
+    if (!fullText) continue;
+
+    // カンマ、タブ、1つ以上のスペースのいずれかで分割
+    const parts = fullText.split(/[, \t]+/); 
+    
+    if (parts.length >= 2) {
+      const kanji = parts[0].trim();
+      const yomi = parts[1].trim();
+      rubyObj[kanji] = yomi;
+    }
+  }
+});
+
+console.log("最終的な辞書:", rubyObj);
+rubyConverter.setDictionary(rubyObj);
+    
+    console.log("作成された辞書オブジェクト:", rubyObj);
+    rubyConverter.setDictionary(rubyObj);
+
+    rubyConverter.setDictionary(rubyObj);
+    console.log("4. 辞書セット完了。クイズを読み込みます...");
+
+    const data = await loadData('P38.json'); 
+    console.log("5. クイズデータ取得完了。描画します...");
     renderQuiz(data);
     
   } catch (err) {
-    console.error("データの読み込みに失敗しました:", err);
-    container.innerHTML = `<p style="color:red;">エラー: ${err.message}</p>`;
+    console.error("★★★ エラー発生:", err);
+    // 画面にエラーを表示させる
+    document.getElementById("quiz").innerHTML = `<p style="color:red;">エラー: ${err.message}</p>`;
   }
 });
 </script>

@@ -5,6 +5,7 @@ project:
 
 resources:
   - Baba.png
+  - ruby.csv
   - P38.json
 
 
@@ -23,8 +24,12 @@ website:
         text: はじめに
       - text: "介護福祉士過去問"
         menu:
-          - href: test.qmd
+          - href: P38.qmd
             text: "第38回（2025年度）"
+      - text: "Exam with Ruby"
+        menu:
+          - href: P38_ruby.qmd
+            text: "38"
 
 format:
   html:

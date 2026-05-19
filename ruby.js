@@ -15,6 +15,16 @@ class RubyConverter {
   }
 
   convert(text) {
+    console.log("convert呼び出し:", text);
+    console.log("現在の辞書:", this.dictionary);
+    console.log("ソート済み漢字:", this.sortedKanji);
+  
+    if (!text || typeof text !== 'string') return text;
+    if (!this.sortedKanji.length) {
+      console.warn("辞書が空のため、変換をスキップしました");
+      return text;
+    }
+
     if (!text || typeof text !== 'string') return text;
     if (!this.sortedKanji.length) return text;
 
@@ -42,7 +52,7 @@ class RubyConverter {
       const placeholderRegex = new RegExp(`__RUBY_ID_${i}__`, 'g');
       convertedText = convertedText.replace(placeholderRegex, rubyTag);
     });
-
+    console.log("変換結果:", convertedText);
     return convertedText;
   }
 }
