@@ -24,11 +24,11 @@ website:
         text: はじめに
       - text: "介護福祉士過去問"
         menu:
-          - href: P38.qmd
+          - href: P38_G.qmd
             text: "第38回（2025年度）"
       - text: "Exam with Ruby"
         menu:
-          - href: P38_ruby.qmd
+          - href: P38_G_Ruby.qmd
             text: "38"
 
 format:
