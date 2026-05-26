@@ -26,6 +26,8 @@ website:
         menu:
           - href: P38_G.qmd
             text: "第38回（2025年度）"
+          - href: P38_G_NUHW.qmd
+            text: "第38回（2025年度） NUHW"
       - text: "Exam with Ruby"
         menu:
           - href: P38_G_Ruby.qmd

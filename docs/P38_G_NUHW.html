@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>介護福祉士 講義資料 – 介護福祉士過去問練習</title>
+<title>第38回 – 介護福祉士過去問練習</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -98,7 +98,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page"> 
+    <a class="nav-link" href="./index.html"> 
 <span class="menu-text">はじめに</span></a>
   </li>  
   <li class="nav-item dropdown ">
@@ -146,7 +146,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">介護福祉士 講義資料</h1>
+<h1 class="title">第38回</h1>
 </div>
 
 
@@ -163,8 +163,40 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><ruby>介護福祉士養成<rt>かいごふくししようせい</rt></ruby>コースの<ruby>講義資料<rt>こうぎしりょう</rt></ruby>と<ruby>介護福祉士養成<rt>かいごふくししようせい</rt></ruby>コースの<ruby>介護福祉士国家試験<rt>かいごふくししこっかしけん</rt></ruby>の<ruby>過去問<rt>かこもん</rt></ruby>です。</p>
-<p><ruby>他大学<rt>ただいがく</rt></ruby>・<ruby>専門学校<rt>せんもんがっこう</rt></ruby>の方も、ご<ruby>自由<rt>じゆう</rt></ruby>にお<ruby>使<rt>つか</rt></ruby>いください。</p>
+<p>問題数と選択肢を減らしてあります。 また、選択肢はシャッフルしています。</p>
+<div id="quiz">
+
+</div>
+<script>
+window.noShuffleQuestions = true; // true はシャッフル、false はしない
+window.kakomonNChoice = 3;
+window.quizConfig = {
+  // "カテゴリ名": 出題数
+  "発達と老化の理解": 2,
+  "認知症の理解": 1,
+  "障害の理解": 4,
+  "医療的ケア": 4
+};
+
+// --- 実行例 ---
+window.addEventListener('DOMContentLoaded', async () => {
+  const container = document.getElementById("quiz");
+  try {
+    // 1. データの読み込み
+    // ※ quiz-engine.js 内に loadData 関数があることが前提
+    // NUHW過去問サイト
+    const data = await loadData('https://docs.google.com/spreadsheets/d/e/2PACX-1vTL-UpBFTzgaSpF_bY0LI_U_LU7KjqJpdRbnXNOhJpC6UDUnBQiikFtveiPyj24w4nT0v5WxlB5msGP/pub?gid=53070967&single=true&output=csv'); 
+    
+    // 2. データの描画
+    // ※ quiz-engine.js 内に renderQuiz 関数があることが前提
+    renderQuiz(data);
+    
+  } catch (err) {
+    console.error("データの読み込みに失敗しました:", err);
+    container.innerHTML = `<p style="color:red;">エラー: ${err.message}</p>`;
+  }
+});
+</script>
 
 
 
