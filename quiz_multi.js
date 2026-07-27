@@ -12,10 +12,19 @@ let currentQuizData = [];
  */
 function applyRubyAndMd(text) {
     if (!text) return "";
-    const targetText = String(text).trim();
-    const hasRuby = typeof rubyConverter !== "undefined" && rubyConverter.sortedKanji && rubyConverter.sortedKanji.length > 0;
-    const rubyfied = hasRuby ? rubyConverter.convert(targetText) : targetText;
-    return mdInline(rubyfied);
+
+    let targetText = String(text)
+        .replace(/\r\n|\r|\n/g, "<br>");
+
+    if (typeof rubyConverter !== "undefined" &&
+        rubyConverter.sortedKanji &&
+        rubyConverter.sortedKanji.length > 0) {
+        targetText = rubyConverter.convert(targetText);
+    }
+
+    return DOMPurify.sanitize(targetText, {
+        ADD_TAGS: ["ruby", "rt", "rp", "br"]
+    });
 }
 
 /**
