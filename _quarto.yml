@@ -26,7 +26,7 @@ website:
         menu:
           - href: P38_G.qmd
             text: "第38回（2025年度）"
-          - href: P38_G_NUHW.qmd
+          - href: P38_G_NUHW.qmd # 問題は https://docs.google.com/spreadsheets/d/1ogzv7jO0jXtAA_fAIhqsIMezmA9wsYm8v6xd4vKn8zw/edit?usp=sharing
             text: "2026年度 NUHW"
       - text: "Exam with Ruby"
         menu:

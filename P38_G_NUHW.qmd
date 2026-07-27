@@ -2,8 +2,12 @@
 title: "第38回"
 ---
 
-問題数と選択肢を減らしてあります。
+問題数と選択肢を減らしてあります（こころとからだのしくみ、発達と老化の理解、認知症の理解、障害の理解、医療的ケアからそれぞれ１題）。
 また、選択肢はシャッフルしています。
+
+  <button onclick="preparePrint()" style="cursor:pointer; padding:5px; border-radius:5px; border:1px solid #ccc; background:#fff;">
+    🖨️ 印刷用レイアウト
+  </button>
 
 <div id="quiz"></div>
 
