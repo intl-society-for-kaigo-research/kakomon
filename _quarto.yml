@@ -5,7 +5,11 @@ project:
 
 resources:
   - Baba.png
-  - k_am_06_38-49.png
+  - k_am_06_38-49-1.png
+  - k_am_06_38-49-2.png
+  - k_am_06_38-49-3.png
+  - k_am_06_38-49-4.png
+  - k_am_06_38-49-5.png
   - ruby.csv
   - P38.json
 
