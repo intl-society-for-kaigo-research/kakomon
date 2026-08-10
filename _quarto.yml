@@ -31,6 +31,8 @@ website:
         menu:
           - href: P38_G.qmd
             text: "第38回（2025年度）"
+          - href: CW37.qmd
+            text: "第37回（2024年度）"
           - href: Part_A.qmd # 問題は https://docs.google.com/spreadsheets/d/1ogzv7jO0jXtAA_fAIhqsIMezmA9wsYm8v6xd4vKn8zw/edit?usp=sharing
             text: "Part A"
           - href: Part_B.qmd # 問題は https://docs.google.com/spreadsheets/d/1ogzv7jO0jXtAA_fAIhqsIMezmA9wsYm8v6xd4vKn8zw/edit?usp=sharing
