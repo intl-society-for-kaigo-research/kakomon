@@ -1,5 +1,12 @@
 [
   {
+    "objectID": "Part_B.html",
+    "href": "Part_B.html",
+    "title": "Part B",
+    "section": "",
+    "text": "問題数と選択肢を減らしてあります（こころとからだのしくみ、発達と老化の理解、認知症の理解、障害の理解、医療的ケアからそれぞれ１題）。 また、選択肢はシャッフルしています。\n 🖨️ 印刷用レイアウト"
+  },
+  {
     "objectID": "P38_ruby.html",
     "href": "P38_ruby.html",
     "title": "Exam 38th with Ruby",
@@ -44,8 +51,15 @@
   {
     "objectID": "Part_A.html",
     "href": "Part_A.html",
-    "title": "第38回",
+    "title": "Part A",
     "section": "",
     "text": "問題数と選択肢を減らしてあります。 また、選択肢はシャッフルしています。\n問題数\n\n人間の尊厳と自立: 1\n介護の基本: 1\n社会の理解: 1\n人間関係とコミュニケーション: 1\nコミュニケーション技術: 1\n生活支援技術: 2\n\nソース\n\n第38回\n第37回のうち、現在のパートAに相当する問題\nオリジナル問題"
+  },
+  {
+    "objectID": "Part_C.html",
+    "href": "Part_C.html",
+    "title": "Part C",
+    "section": "",
+    "text": "問題数と選択肢を減らしてあります。 また、選択肢はシャッフルしています。\n問題数\n\n介護過程: 1\n総合問題: 1\n\nソース\n\n第38回\n第37回のうち、現在のパートCに相当する問題\nオリジナル問題"
   }
 ]
