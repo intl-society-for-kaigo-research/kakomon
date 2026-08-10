@@ -43,7 +43,7 @@ website:
         menu:
           - href: P38_G_Ruby.qmd
             text: "38"
-          - href: CW38_Ruby.qmd
+          - href: CW37_Ruby.qmd
             text: "37"
 
 format:
