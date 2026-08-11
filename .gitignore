@@ -48,13 +48,14 @@ rsconnect/
 /.quarto/
 .positai
 
-.DS_Store
-
 **/*.quarto_ipynb
+
+
+.DS_Store
 _exams
 scripts/*.csv
 scripts/*.tsv
-scripts/.~*
+scripts/.*
 scripts/dump
 .~*
 test.*
