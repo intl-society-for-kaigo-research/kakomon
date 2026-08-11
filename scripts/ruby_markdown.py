@@ -70,6 +70,59 @@ def remove_manual_ruby(text):
     return re.sub(pattern, r'\1', text)
 
 
+def remove_okurigana(text):
+    """
+    漢字＋送り仮名｛読み＋送り仮名｝
+    の末尾で一致するひらがなを、両方から取り除く。
+
+    例:
+        関す｛かんす｝る
+        ↓
+        関｛かん｝する
+
+        関わる｛かかわる｝
+        ↓
+        関｛かか｝わる
+    """
+
+    hiragana = r"\u3041-\u3096"
+
+    pattern = re.compile(
+        rf"([\u3400-\u4DBF\u4E00-\u9FFF]+[{hiragana}]*)"
+        rf"｛([^｛｝]+)｝"
+    )
+
+    def replace(match):
+        body = match.group(1)
+        reading = match.group(2)
+
+        # 本文側と読み側の末尾にある、
+        # 共通するひらがなのまとまりを探す
+        i = 0
+
+        while (
+            i < len(body)
+            and i < len(reading)
+            and re.match(rf"[{hiragana}]", body[-(i + 1)])
+            and body[-(i + 1)] == reading[-(i + 1)]
+        ):
+            i += 1
+
+        if i == 0:
+            return match.group(0)
+
+        okurigana = body[-i:]
+        new_body = body[:-i]
+        new_reading = reading[:-i]
+
+        if not new_body or not new_reading:
+            return match.group(0)
+
+        return f"{new_body}｛{new_reading}｝{okurigana}"
+
+    return pattern.sub(replace, text)
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="テキストに「漢字｛よみ｝」形式のルビを付ける"
@@ -88,6 +141,7 @@ def main():
 
     result = remove_manual_ruby(text)
     result = add_ruby(result, ruby_dict)
+    result = remove_okurigana(result)
 
     with open(args.output, "w", encoding="utf-8") as f:
         f.write(result)

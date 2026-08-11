@@ -52,8 +52,12 @@ rsconnect/
 
 **/*.quarto_ipynb
 _exams
-*.csv
+scripts/*.csv
+scripts/*.tsv
+scripts/.~*
+scripts/dump
 .~*
-test.html
+test.*
+docs/test.*
 
 
