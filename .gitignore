@@ -48,5 +48,8 @@ rsconnect/
 /.quarto/
 .positai
 
+.DS_Store
+
 **/*.quarto_ipynb
 _exams
+*.csv
