@@ -101,6 +101,10 @@ ul.task-list li input[type="checkbox"] {
     <a class="nav-link" href="./index.html"> 
 <span class="menu-text">はじめに</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./test.html" aria-current="page"> 
+<span class="menu-text">Test</span></a>
+  </li>  
   <li class="nav-item dropdown ">
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">介護福祉士過去問</span>
@@ -179,6 +183,10 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<button onclick="preparePrint()" style="cursor:pointer; padding:5px; border-radius:5px; border:1px solid #ccc; background:#fff;">
+🖨️ 印刷用レイアウト
+</button>
+<p>問題数と選択肢を減らしてあります。 また、選択肢はシャッフルしています。</p>
 <div id="quiz">
 
 </div>
@@ -187,17 +195,7 @@ window.noShuffleQuestions = true; // true はシャッフル、false はしな�
 window.kakomonNChoice = 3;
 window.quizConfig = {
   // "カテゴリ名": 出題数
-  "人間の尊厳と自立": 2,
-  "介護の基本": 4,
-  "社会の理解": 4,
-  "人間関係とコミュニケーション": 4,
-  "コミュニケーション技術": 4,
-  "生活支援技術": 4,
-  "こころとからだのしくみ": 4,
-  "発達と老化の理解": 4,
-  "認知症の理解": 4,
-  "障害の理解": 4,
-  "医療的ケア": 2
+  "生活支援技術": 25
 };
 
 // --- 実行例 ---
@@ -206,7 +204,7 @@ window.addEventListener('DOMContentLoaded', async () => {
   try {
     // 1. データの読み込み
     // ※ quiz-engine.js 内に loadData 関数があることが前提
-    const data = await loadData('P38.json'); 
+    const data = await loadData('https://docs.google.com/spreadsheets/d/e/2PACX-1vTL-UpBFTzgaSpF_bY0LI_U_LU7KjqJpdRbnXNOhJpC6UDUnBQiikFtveiPyj24w4nT0v5WxlB5msGP/pub?gid=1165209155&single=true&output=csv'); 
     
     // 2. データの描画
     // ※ quiz-engine.js 内に renderQuiz 関数があることが前提

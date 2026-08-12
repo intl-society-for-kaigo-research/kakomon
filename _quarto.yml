@@ -27,6 +27,8 @@ website:
     left:
       - href: index.qmd
         text: はじめに
+      - href: test.qmd
+        text: Test
       - text: "介護福祉士過去問"
         menu:
           - href: P38_G.qmd

@@ -11,19 +11,23 @@ let currentQuizData = [];
  * テキストにルビ変換（存在する場合）を適用する
  */
 function renderTextWithRuby(text) {
-    if (!text) return "";
+  if (!text) return "";
 
-    let targetText = String(text)
-        .replace(/\r\n|\r|\n/g, "<br>");
+  let targetText = String(text)
+    .replace(/\r\n|\r|\n/g, "<br>");
 
-    targetText = targetText.replace(
-        /([\u3400-\u9FFF\uF900-\uFAFF々]+)｛([^｛｝]+)｝/g,
-        "<ruby>$1<rt>$2</rt></ruby>"
-    );
+  targetText = targetText.replace(
+    /([\u3400-\u9FFF\uF900-\uFAFF々]+)｛([^｛｝]+)｝/g,
+    "<ruby>$1<rt>$2</rt></ruby>"
+  );
 
-    return DOMPurify.sanitize(targetText, {
-        ADD_TAGS: ["ruby", "rt", "rp", "br"]
-    });
+  // MarkdownをHTMLに変換
+  const rawHtml = marked.parseInline(targetText);
+
+  return DOMPurify.sanitize(rawHtml, {
+    ADD_TAGS: ["ruby", "rt", "rp", "br", "img"],
+    ADD_ATTR: ["src", "alt", "title", "width", "height"]
+  });
 }
 
 /**
@@ -224,13 +228,6 @@ function shuffle(array) {
     [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
   }
   return newArray;
-}
-
-function mdInline(text) {
-  if (!text) return "";
-  const rawHtml = marked.parse(text.toString().replace(/\\n/g, "\n") || "");
-  const cleanHtml = rawHtml.replace(/^<p>|<\/p>\n?$/g, "");
-  return DOMPurify.sanitize(cleanHtml, { ADD_TAGS: ["ruby", "rt", "rp"] });
 }
 
 /* =========================
