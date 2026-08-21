@@ -8,23 +8,26 @@ let currentQuizData = [];
 ========================= */
 
 /**
- * テキストにルビ変換（存在する場合）とMarkdown変換を適用する
+ * テキストにルビ変換（存在する場合）を適用する
  */
-function applyRubyAndMd(text) {
-    if (!text) return "";
+function renderTextWithRuby(text) {
+  if (!text) return "";
 
-    let targetText = String(text)
-        .replace(/\r\n|\r|\n/g, "<br>");
+  let targetText = String(text)
+    .replace(/\r\n|\r|\n/g, "<br>");
 
-    if (typeof rubyConverter !== "undefined" &&
-        rubyConverter.sortedKanji &&
-        rubyConverter.sortedKanji.length > 0) {
-        targetText = rubyConverter.convert(targetText);
-    }
+  targetText = targetText.replace(
+    /([\u3400-\u9FFF\uF900-\uFAFF々]+)｛([^｛｝]+)｝/g,
+    "<ruby>$1<rt>$2</rt></ruby>"
+  );
 
-    return DOMPurify.sanitize(targetText, {
-        ADD_TAGS: ["ruby", "rt", "rp", "br"]
-    });
+  // MarkdownをHTMLに変換
+  const rawHtml = marked.parseInline(targetText);
+
+  return DOMPurify.sanitize(rawHtml, {
+    ADD_TAGS: ["ruby", "rt", "rp", "br", "img"],
+    ADD_ATTR: ["src", "alt", "title", "width", "height"]
+  });
 }
 
 /**
@@ -152,7 +155,7 @@ function checkAnswerMulti(quizIndex, explanation) {
 
   if (typeof updateScoreDisplay === "function") updateScoreDisplay();
 
-  let html = applyRubyAndMd(explanation || "（解説なし）");
+  let html = renderTextWithRuby(explanation || "（解説なし）");
   exp.innerHTML = DOMPurify.sanitize(html, { ADD_TAGS: ["ruby", "rt", "rp"] });
   exp.style.display = "block";
 }
@@ -166,6 +169,13 @@ function renderQuiz(quizData, containerId = "quiz") {
   if (!container) return;
   container.innerHTML = "読み込み中...";
 
+  // 印刷ボタン
+  const printButton = document.createElement("button");
+  printButton.innerHTML = "🖨️ 印刷用レイアウト";
+  printButton.setAttribute("onclick", "preparePrint()");
+  printButton.style.cssText =
+    "cursor:pointer; padding:5px; border-radius:5px; border:1px solid #ccc; background:#fff;";
+
   let formattedData = Array.isArray(quizData) ? quizData : (quizData.quizData || []);
   let displayData = formattedData;
 
@@ -176,42 +186,116 @@ function renderQuiz(quizData, containerId = "quiz") {
       acc[key].push(obj);
       return acc;
     }, {});
+
     displayData = Object.keys(groups).flatMap(catName => {
       const limit = parseInt(window.quizConfig[catName], 10);
-      return (!isNaN(limit) && limit > 0) ? shuffle([...groups[catName]]).slice(0, limit) : []; 
+      return (!isNaN(limit) && limit > 0)
+        ? shuffle([...groups[catName]]).slice(0, limit)
+        : [];
     });
   }
 
-  if (window.noShuffleQuestions === false) displayData = shuffle(displayData);
-  currentQuizData = displayData; 
+  if (window.noShuffleQuestions === false) {
+    displayData = shuffle(displayData);
+  }
+
+  currentQuizData = displayData;
   container.innerHTML = "";
 
+  // ★ トップに印刷ボタンを配置
+  container.appendChild(printButton);
+
   if (displayData.length === 0) {
-    container.innerHTML = "条件に一致する問題がありません。";
+    container.innerHTML += "条件に一致する問題がありません。";
     return;
   }
 
+  // ==================================================
+  // カテゴリ一覧を作成
+  // ==================================================
+  const categories = [];
+
+  displayData.forEach(q => {
+    const category = q.category || "未分類";
+    if (!categories.includes(category)) {
+      categories.push(category);
+    }
+  });
+
+  if (categories.length > 0) {
+    const categoryNav = document.createElement("div");
+    categoryNav.className = "category-nav";
+
+    const navTitle = document.createElement("div");
+    navTitle.className = "category-nav-title";
+    navTitle.textContent = "カテゴリ";
+    categoryNav.appendChild(navTitle);
+
+    categories.forEach((category, index) => {
+      const link = document.createElement("a");
+
+      const categoryId = `quiz-category-${index}`;
+
+      link.href = `#${categoryId}`;
+      link.textContent = category;
+      link.className = "category-link";
+
+      categoryNav.appendChild(link);
+    });
+
+    container.appendChild(categoryNav);
+  }
+
+  // ==================================================
+  // 問題を表示
+  // ==================================================
   let currentCategory = "";
+  let categoryIndex = 0;
+
   displayData.forEach((q, index) => {
     if (q.category && q.category !== currentCategory) {
       currentCategory = q.category;
+
       const categoryTitle = document.createElement("h3");
       categoryTitle.className = "category-title";
-      categoryTitle.innerHTML = applyRubyAndMd(currentCategory);
+      categoryTitle.id = `quiz-category-${categoryIndex}`;
+      categoryIndex++;
+
+      categoryTitle.innerHTML = renderTextWithRuby(currentCategory);
       container.appendChild(categoryTitle);
     }
+
     const div = document.createElement("div");
     div.classList.add("quiz-item");
+
+    console.log("quiz_multi.js kakomonNChoice:", window.kakomonNChoice);
+
     const nChoice = window.kakomonNChoice || 5;
+
+    console.log("nChoice:", nChoice);
+
     const choices = prepareChoices(q, nChoice);
-    const qText = applyRubyAndMd(q.question);
+    const qText = renderTextWithRuby(q.question);
+
     let html = `<p><strong>Q${index + 1}. ${qText}</strong></p><div class="choices-container">`;
+
     choices.forEach(choice => {
-      const cText = applyRubyAndMd(choice.text);
+      const cText = renderTextWithRuby(choice.text);
+
       html += `<button type="button" class="choice-btn" data-correct="${choice.isCorrect}" onclick="toggleSelection(this)">${cText}</button>`;
     });
-    const safeExp = q.explanation ? q.explanation.replace(/'/g, "\\'").replace(/"/g, '&quot;') : "";
-    html += `</div><button class="submit-btn" onclick="checkAnswerMulti(${index}, '${safeExp}')">ANSWER</button><p class="result"></p><div class="explanation" style="display:none;"></div>`;
+
+    const safeExp = q.explanation
+      ? q.explanation.replace(/'/g, "\\'").replace(/"/g, '&quot;')
+      : "";
+
+    html += `
+      </div>
+      <button class="submit-btn" onclick="checkAnswerMulti(${index}, '${safeExp}')">ANSWER</button>
+      <p class="result"></p>
+      <div class="explanation" style="display:none;"></div>
+    `;
+
     div.innerHTML = html;
     container.appendChild(div);
   });
@@ -225,13 +309,6 @@ function shuffle(array) {
     [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
   }
   return newArray;
-}
-
-function mdInline(text) {
-  if (!text) return "";
-  const rawHtml = marked.parse(text.toString().replace(/\\n/g, "\n") || "");
-  const cleanHtml = rawHtml.replace(/^<p>|<\/p>\n?$/g, "");
-  return DOMPurify.sanitize(cleanHtml, { ADD_TAGS: ["ruby", "rt", "rp"] });
 }
 
 /* =========================
@@ -322,7 +399,7 @@ function renderQuizForPrint(quizData) {
 
   quizData.forEach((q, index) => {
     const choices = prepareChoices(q, nChoice);
-    const qText = applyRubyAndMd(q.question);
+    const qText = renderTextWithRuby(q.question);
     
     questionsHtml += `
       <div class="print-item" style="margin-bottom: 1.5rem; break-inside: avoid; border-bottom: 1px dashed #ccc; padding-bottom: 1rem;">
@@ -330,7 +407,7 @@ function renderQuizForPrint(quizData) {
     `;
 
     choices.forEach((c, i) => {
-      const cText = applyRubyAndMd(c.text);
+      const cText = renderTextWithRuby(c.text);
       questionsHtml += `<div style="margin-left: 20px; margin-bottom: 0.4rem;">（ ${i + 1} ） ${cText}</div>`;
     });
 
