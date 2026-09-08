@@ -169,13 +169,6 @@ function renderQuiz(quizData, containerId = "quiz") {
   if (!container) return;
   container.innerHTML = "読み込み中...";
 
-  // 印刷ボタン
-  const printButton = document.createElement("button");
-  printButton.innerHTML = "🖨️ 印刷用レイアウト";
-  printButton.setAttribute("onclick", "preparePrint()");
-  printButton.style.cssText =
-    "cursor:pointer; padding:5px; border-radius:5px; border:1px solid #ccc; background:#fff;";
-
   let formattedData = Array.isArray(quizData) ? quizData : (quizData.quizData || []);
   let displayData = formattedData;
 
@@ -202,11 +195,8 @@ function renderQuiz(quizData, containerId = "quiz") {
   currentQuizData = displayData;
   container.innerHTML = "";
 
-  // ★ トップに印刷ボタンを配置
-  container.appendChild(printButton);
-
   if (displayData.length === 0) {
-    container.innerHTML += "条件に一致する問題がありません。";
+    container.innerHTML = "条件に一致する問題がありません。";
     return;
   }
 
@@ -228,12 +218,13 @@ function renderQuiz(quizData, containerId = "quiz") {
 
     const navTitle = document.createElement("div");
     navTitle.className = "category-nav-title";
-    navTitle.textContent = "カテゴリ";
+    navTitle.textContent = "試験科目";
     categoryNav.appendChild(navTitle);
 
     categories.forEach((category, index) => {
       const link = document.createElement("a");
 
+      // 安全なIDを生成
       const categoryId = `quiz-category-${index}`;
 
       link.href = `#${categoryId}`;
@@ -253,11 +244,14 @@ function renderQuiz(quizData, containerId = "quiz") {
   let categoryIndex = 0;
 
   displayData.forEach((q, index) => {
+
     if (q.category && q.category !== currentCategory) {
       currentCategory = q.category;
 
       const categoryTitle = document.createElement("h3");
       categoryTitle.className = "category-title";
+
+      // カテゴリ一覧からジャンプできるID
       categoryTitle.id = `quiz-category-${categoryIndex}`;
       categoryIndex++;
 
@@ -282,7 +276,13 @@ function renderQuiz(quizData, containerId = "quiz") {
     choices.forEach(choice => {
       const cText = renderTextWithRuby(choice.text);
 
-      html += `<button type="button" class="choice-btn" data-correct="${choice.isCorrect}" onclick="toggleSelection(this)">${cText}</button>`;
+      html += `
+        <button
+          type="button"
+          class="choice-btn"
+          data-correct="${choice.isCorrect}"
+          onclick="toggleSelection(this)"
+        >${cText}</button>`;
     });
 
     const safeExp = q.explanation
@@ -291,7 +291,10 @@ function renderQuiz(quizData, containerId = "quiz") {
 
     html += `
       </div>
-      <button class="submit-btn" onclick="checkAnswerMulti(${index}, '${safeExp}')">ANSWER</button>
+      <button
+        class="submit-btn"
+        onclick="checkAnswerMulti(${index}, '${safeExp}')"
+      >ANSWER</button>
       <p class="result"></p>
       <div class="explanation" style="display:none;"></div>
     `;

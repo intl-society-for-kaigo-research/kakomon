@@ -114,18 +114,6 @@ ul.task-list li input[type="checkbox"] {
     <a class="dropdown-item" href="./CW37.html">
  <span class="dropdown-text">第37回（2024年度）</span></a>
   </li>  
-        <li>
-    <a class="dropdown-item" href="./Part_A.html">
- <span class="dropdown-text">Part A</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./Part_B.html">
- <span class="dropdown-text">Part B</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="./Part_C.html">
- <span class="dropdown-text">Part C</span></a>
-  </li>  
     </ul>
   </li>
   <li class="nav-item dropdown ">
@@ -134,7 +122,7 @@ ul.task-list li input[type="checkbox"] {
     </a>
     <ul class="dropdown-menu" aria-labelledby="nav-menu-exam-with-ruby">    
         <li>
-    <a class="dropdown-item" href="./P38_G_Ruby.html">
+    <a class="dropdown-item" href="./CW38_Ruby.html">
  <span class="dropdown-text">38</span></a>
   </li>  
         <li>
@@ -179,49 +167,18 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p>選択肢を減らしシャッフルしています。</p>
-<p>現在のパート順に並べ替えてあります。</p>
+<!-- 1. GAS呼び出し用の設定パラメータ -->
+<script>
+  window.schoolName  = "ISKR";
+  window.kakomonName = "過去問第37回";
+  window.noShuffleQuestions = true;
+</script>
+<!-- 2. GASと連携してクイズデータを取得・描画するスクリプト -->
+<script src="load_gsheet.js"></script>
+<!-- 3. クイズを表示するエリア -->
 <div id="quiz">
 
 </div>
-<script>
-window.noShuffleQuestions = true; // true はシャッフル、false はしない
-window.kakomonNChoice = 3;
-window.quizConfig = {
-  // "カテゴリ名": 出題数
-  "人間の尊厳と自立": 2,
-  "介護の基本": 16,
-  "社会の理解": 12,
-  "人間関係とコミュニケーション": 4,
-  "コミュニケーション技術": 6,
-  "生活支援技術": 26,
-  "こころとからだのしくみ": 12,
-  "発達と老化の理解": 8,
-  "認知症の理解": 10,
-  "障害の理解": 10,
-  "医療的ケア": 5,
-  "介護過程": 8,
-  "総合問題": 12
-};
-
-// --- 実行例 ---
-window.addEventListener('DOMContentLoaded', async () => {
-  const container = document.getElementById("quiz");
-  try {
-    // 1. データの読み込み
-    // ※ quiz-engine.js 内に loadData 関数があることが前提
-    const data = await loadData('https://docs.google.com/spreadsheets/d/e/2PACX-1vTL-UpBFTzgaSpF_bY0LI_U_LU7KjqJpdRbnXNOhJpC6UDUnBQiikFtveiPyj24w4nT0v5WxlB5msGP/pub?gid=1076456492&single=true&output=csv'); 
-    
-    // 2. データの描画
-    // ※ quiz-engine.js 内に renderQuiz 関数があることが前提
-    renderQuiz(data);
-    
-  } catch (err) {
-    console.error("データの読み込みに失敗しました:", err);
-    container.innerHTML = `<p style="color:red;">エラー: ${err.message}</p>`;
-  }
-});
-</script>
 
 
 

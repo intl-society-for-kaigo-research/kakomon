@@ -167,46 +167,18 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><ruby>問題数<rt>もんだいいすう</rt></ruby>と<ruby>選択肢<rt>せんたくし</rt></ruby>を<ruby>減<rt>へ</rt></ruby>らしてあります。 また、<ruby>選択肢<rt>せんたくし</rt></ruby>はシャッフルしています。</p>
+<!-- 1. GAS呼び出し用の設定パラメータ -->
+<script>
+  window.schoolName  = "ISKR";
+  window.kakomonName = "過去問第38回_ルビ";
+  window.noShuffleQuestions = true;
+</script>
+<!-- 2. GASと連携してクイズデータを取得・描画するスクリプト -->
+<script src="load_gsheet.js"></script>
+<!-- 3. クイズを表示するエリア -->
 <div id="quiz">
 
 </div>
-<script>
-window.noShuffleQuestions = true; // true はシャッフル、false はしない
-window.kakomonNChoice = 3;
-window.quizConfig = {
-  // "カテゴリ名": 出題数
-  "人間の尊厳と自立": 2,
-  "介護の基本": 4,
-  "社会の理解": 4,
-  "人間関係とコミュニケーション": 4,
-  "コミュニケーション技術": 4,
-  "生活支援技術": 4,
-  "こころとからだのしくみ": 4,
-  "発達と老化の理解": 4,
-  "認知症の理解": 4,
-  "障害の理解": 4,
-  "医療的ケア": 2
-};
-
-// --- 実行例 ---
-window.addEventListener('DOMContentLoaded', async () => {
-  const container = document.getElementById("quiz");
-  try {
-    // 1. データの読み込み
-    // ※ quiz-engine.js 内に loadData 関数があることが前提
-    const data = await loadData('https://docs.google.com/spreadsheets/d/e/2PACX-1vTL-UpBFTzgaSpF_bY0LI_U_LU7KjqJpdRbnXNOhJpC6UDUnBQiikFtveiPyj24w4nT0v5WxlB5msGP/pub?gid=122042974&single=true&output=csv'); 
-    
-    // 2. データの描画
-    // ※ quiz-engine.js 内に renderQuiz 関数があることが前提
-    renderQuiz(data);
-    
-  } catch (err) {
-    console.error("データの読み込みに失敗しました:", err);
-    container.innerHTML = `<p style="color:red;">エラー: ${err.message}</p>`;
-  }
-});
-</script>
 
 
 

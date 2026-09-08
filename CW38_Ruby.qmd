@@ -1,11 +1,11 @@
 ---
-title: "第37回"
+title: "Exam 38th with Ruby"
 ---
 
 <!-- 1. GAS呼び出し用の設定パラメータ -->
 <script>
   window.schoolName  = "ISKR";
-  window.kakomonName = "過去問第37回";
+  window.kakomonName = "過去問第38回_ルビ";
   window.noShuffleQuestions = true;
 </script>
 
