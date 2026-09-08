@@ -40,6 +40,10 @@ website:
             text: "38"
           - href: CW37_Ruby.qmd
             text: "37"
+      - text: "Exam by Category"
+        menu:
+          - href: CAT_IRYO.qmd
+            text: "医療的ケア"
 
 format:
   html:

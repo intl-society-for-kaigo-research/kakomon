@@ -1,0 +1,16 @@
+---
+title: "医療的ケア"
+---
+
+<!-- 1. GAS呼び出し用の設定パラメータ -->
+<script>
+  window.schoolName  = "ISKR";
+  window.kakomonName = "医療的ケア";
+  window.noShuffleQuestions = true;
+</script>
+
+<!-- 2. GASと連携してクイズデータを取得・描画するスクリプト -->
+<script src="load_gsheet.js"></script>
+
+<!-- 3. クイズを表示するエリア -->
+<div id="quiz"></div>

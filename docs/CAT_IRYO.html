@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Exam 38th with Ruby – 介護福祉士過去問練習</title>
+<title>医療的ケア – 介護福祉士過去問練習</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -161,7 +161,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Exam 38th with Ruby</h1>
+<h1 class="title">医療的ケア</h1>
 </div>
 
 
@@ -178,91 +178,18 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><ruby>問題数<rt>もんだいいすう</rt></ruby>と<ruby>選択肢<rt>せんたくし</rt></ruby>を<ruby>減<rt>へ</rt></ruby>らしてあります。 また、<ruby>選択肢<rt>せんたくし</rt></ruby>はシャッフルしています。</p>
+<!-- 1. GAS呼び出し用の設定パラメータ -->
+<script>
+  window.schoolName  = "ISKR";
+  window.kakomonName = "医療的ケア";
+  window.noShuffleQuestions = true;
+</script>
+<!-- 2. GASと連携してクイズデータを取得・描画するスクリプト -->
+<script src="load_gsheet.js"></script>
+<!-- 3. クイズを表示するエリア -->
 <div id="quiz">
 
 </div>
-<script>
-window.noShuffleQuestions = true; // true はシャッフル、false はしない
-window.kakomonNChoice = 3;
-window.quizConfig = {
-  // "カテゴリ名": 出題数
-  "人間の尊厳と自立": 2,
-  "介護の基本": 4,
-  "社会の理解": 4,
-  "人間関係とコミュニケーション": 4,
-  "コミュニケーション技術": 4,
-  "生活支援技術": 4,
-  "こころとからだのしくみ": 4,
-  "発達と老化の理解": 4,
-  "認知症の理解": 4,
-  "障害の理解": 4,
-  "医療的ケア": 2
-};
-
-// --- 実行例 ---
-window.addEventListener('DOMContentLoaded', async () => {
-  try {
-    console.log("1. ルビの読み込み開始...");
-    // ファイル名が ruby.tsv ならここも合わせてください
-    const rubyRes = await fetch('ruby.csv?v=' + new Date().getTime());
-    
-    if (!rubyRes.ok) throw new Error(`ルビファイルが見つかりません: ${rubyRes.status}`);
-
-    const rubyText = await rubyRes.text();
-    console.log("2. ルビテキスト取得完了。解析します...");
-
-    const parsed = Papa.parse(rubyText, { 
-      header: true, 
-      skipEmptyLines: true,
-      delimiter: "\t" // タブ区切りを明示
-    });
-
-    console.log("3. 解析結果:", parsed.data);
-
-    // --- 修正版：解析と辞書セット ---
-const rubyObj = {};
-
-parsed.data.forEach(row => {
-  for (let key in row) {
-    // String() で強制的に文字列に変換し、中身があるかチェック
-    const rawValue = row[key];
-    if (rawValue === null || rawValue === undefined) continue;
-
-    const fullText = String(rawValue).trim();
-    if (!fullText) continue;
-
-    // カンマ、タブ、1つ以上のスペースのいずれかで分割
-    const parts = fullText.split(/[, \t]+/); 
-    
-    if (parts.length >= 2) {
-      const kanji = parts[0].trim();
-      const yomi = parts[1].trim();
-      rubyObj[kanji] = yomi;
-    }
-  }
-});
-
-console.log("最終的な辞書:", rubyObj);
-rubyConverter.setDictionary(rubyObj);
-    
-    console.log("作成された辞書オブジェクト:", rubyObj);
-    rubyConverter.setDictionary(rubyObj);
-
-    rubyConverter.setDictionary(rubyObj);
-    console.log("4. 辞書セット完了。クイズを読み込みます...");
-
-    const data = await loadData('P38.json'); 
-    console.log("5. クイズデータ取得完了。描画します...");
-    renderQuiz(data);
-    
-  } catch (err) {
-    console.error("★★★ エラー発生:", err);
-    // 画面にエラーを表示させる
-    document.getElementById("quiz").innerHTML = `<p style="color:red;">エラー: ${err.message}</p>`;
-  }
-});
-</script>
 
 
 
